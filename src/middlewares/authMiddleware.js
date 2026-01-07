@@ -3,7 +3,12 @@ import User from "../models/User.js";
 
 export const protectedRoute = (req, res, next) => {
   try {
-    const token = req.cookies.accessToken;
+    const authHeader = req.headers["authorization"];
+    let token = authHeader && authHeader.split(" ")[1];
+
+    if (!token) {
+      token = req.cookies.accessToken;
+    }
 
     if (!token) {
       return res.status(401).json({ message: "Unauthorized" });

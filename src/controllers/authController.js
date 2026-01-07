@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import Session from "../models/Session.js";
 
-const ACCESS_TOKEN_TTL = 30; // 30p (thuong la 15p)
+const ACCESS_TOKEN_TTL = 30 * 60; // 30p (thuong la 15p)
 const REFRESH_TOKEN_TTL = 14 * 24 * 60 * 60 * 1000; // 14 ngay
 
 export const signUp = async (req, res) => {
@@ -171,7 +171,7 @@ export const refreshToken = async (req, res) => {
       maxAge: ACCESS_TOKEN_TTL * 1000,
     });
 
-    return res.sendStatus(204);
+    return res.status(200).json({ accessToken });
   } catch (error) {
     console.log("refreshToken error", error);
     return res.status(500).json({
