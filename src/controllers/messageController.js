@@ -11,29 +11,11 @@ export const sendDirectMessage = async (req, res) => {
       return res.status(404).json({ message: "Message not found!" });
     }
 
-    let conversation;
-
-    if (conversationId) {
-      conversation = await Conversation.findById(conversationId);
+    if (!conversationId) {
+      return res.status(404).json({ message: "ConversationId not found!" });
     }
 
-    if (!conversation) {
-      conversation = await Conversation.create({
-        type: "direct",
-        participants: [
-          {
-            userId: senderId,
-            joinedAt: new Date(),
-          },
-          {
-            userId: recipientId,
-            joinedAt: new Date(),
-          },
-        ],
-        lastMessageAt: new Date(),
-        unreadCount: new Map(),
-      });
-    }
+    const conversation = await Conversation.findById(conversationId);
 
     const message = await Message.create({
       conversationId: conversation._id,
