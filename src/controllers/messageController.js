@@ -39,3 +39,8 @@ export const sendGroupMessage = async (req, res) => {
   try {
   } catch (error) {}
 };
+
+export const getMessage = async (req, res) => {
+  try {
+  } catch (error) {}
+};
