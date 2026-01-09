@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Conversation from "../models/Conversation.js";
 
 export const createConversationController = async (req, res) => {
@@ -14,9 +15,8 @@ export const createConversationController = async (req, res) => {
     }
 
     const conversation = await Conversation.findOne({
-      participants: {
-        $all: [{ userId: recipientId }, { userId: senderId }],
-      },
+      type: "direct",
+      "participants.userId": { $all: [recipientId, senderId] },
     });
 
     if (conversation) {
