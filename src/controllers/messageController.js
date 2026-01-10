@@ -42,5 +42,13 @@ export const sendGroupMessage = async (req, res) => {
 
 export const getMessage = async (req, res) => {
   try {
-  } catch (error) {}
+    const conversationId = req.body;
+
+    const message = await Message.find({ conversationId })
+      .populate("senderId", "displayName avatarUrl")
+      .sort({ createdAt: -1 });
+  } catch (error) {
+    console.log("Get message: ", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
 };
